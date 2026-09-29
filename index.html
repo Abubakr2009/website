@@ -1,0 +1,1670 @@
+<!DOCTYPE html>
+<html lang="ru" class="dark scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CodePulse Academy — IT-Школа будущего</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Inter & JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600;800&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            dark: '#0a0d14',
+                            card: '#121826',
+                            purple: '#8b5cf6',
+                            pink: '#ec4899',
+                            cyan: '#06b6d4',
+                            emerald: '#10b981',
+                            amber: '#f59e0b',
+                            blue: '#3b82f6'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace']
+                    },
+                    animation: {
+                        'pulse-glow': 'pulseGlow 4s infinite alternate',
+                        'float': 'float 6s ease-in-out infinite',
+                        'marquee': 'marquee 25s linear infinite',
+                    },
+                    keyframes: {
+                        pulseGlow: {
+                            '0%': { opacity: '0.4', transform: 'scale(1)' },
+                            '100%': { opacity: '0.8', transform: 'scale(1.08)' }
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-15px)' }
+                        },
+                        marquee: {
+                            '0%': { transform: 'translateX(0%)' },
+                            '100%': { transform: 'translateX(-50%)' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #07090e;
+            color: #f3f4f6;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* Glassmorphism Classes */
+        .glass-panel {
+            background: rgba(18, 24, 38, 0.65);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .glass-card {
+            background: rgba(22, 30, 49, 0.5);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .glass-card:hover {
+            border-color: rgba(139, 92, 246, 0.4);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 30px -10px rgba(139, 92, 246, 0.25);
+        }
+
+        .glass-input {
+            background: rgba(15, 21, 33, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            color: #fff;
+        }
+
+        .glass-input:focus {
+            border-color: #8b5cf6;
+            box-shadow: 0 0 15px rgba(139, 92, 246, 0.3);
+            outline: none;
+        }
+
+        /* Custom Neon Text & Glows */
+        .neon-text-purple {
+            text-shadow: 0 0 12px rgba(139, 92, 246, 0.6);
+        }
+
+        .neon-border-cyan {
+            box-shadow: 0 0 15px rgba(6, 182, 212, 0.3);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #07090e;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1f293d;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #8b5cf6;
+        }
+
+        .tab-content {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.4s ease-in-out;
+        }
+
+        .tab-content.active {
+            display: block;
+            opacity: 1;
+        }
+    </style>
+</head>
+<body class="relative min-h-screen flex flex-col justify-between selection:bg-brand-purple selection:text-white">
+
+    <div class="fixed top-0 left-1/4 w-96 h-96 bg-brand-purple/20 rounded-full blur-[120px] pointer-events-none animate-pulse-glow z-0"></div>
+    <div class="fixed bottom-1/3 right-10 w-[30rem] h-[30rem] bg-brand-pink/15 rounded-full blur-[150px] pointer-events-none animate-pulse-glow z-0"></div>
+    <div class="fixed top-2/3 left-10 w-80 h-80 bg-brand-cyan/15 rounded-full blur-[130px] pointer-events-none z-0"></div>
+
+    <header class="sticky top-0 z-50 glass-panel border-b border-white/10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            
+            <!-- Logo -->
+            <a href="#home" onclick="switchTab('home')" class="flex items-center gap-3 group">
+                <div class="w-11 h-11 rounded-xl bg-gradient-to-tr from-brand-purple via-brand-pink to-brand-cyan p-[2px] shadow-lg shadow-brand-purple/20 group-hover:shadow-brand-purple/50 transition-all">
+                    <div class="w-full h-full bg-brand-dark rounded-[10px] flex items-center justify-center">
+                        <i class="fa-solid fa-code text-transparent bg-clip-text bg-gradient-to-r from-brand-purple to-brand-cyan text-xl"></i>
+                    </div>
+                </div>
+                <div class="flex flex-col">
+                    <span class="text-xl font-extrabold tracking-wider bg-clip-text text-transparent bg-gradient-to-r from-white via-purple-100 to-brand-purple">
+                        CODE<span class="text-brand-cyan">PULSE</span>
+                    </span>
+                    <span class="text-[10px] tracking-widest text-gray-400 uppercase font-mono">ACADEMY 2026</span>
+                </div>
+            </a>
+
+            <!-- Desktop Navigation -->
+            <nav class="hidden md:flex items-center gap-1 bg-white/5 p-1.5 rounded-full border border-white/10">
+                <button onclick="switchTab('home')" id="nav-home" class="nav-btn px-5 py-2 rounded-full text-sm font-medium transition-all duration-300 text-white bg-brand-purple/80 shadow-lg shadow-brand-purple/30">
+                    <i class="fa-solid fa-house mr-2 text-xs"></i>Главная
+                </button>
+                <button onclick="switchTab('courses')" id="nav-courses" class="nav-btn px-5 py-2 rounded-full text-sm font-medium transition-all duration-300 text-gray-300 hover:text-white hover:bg-white/10">
+                    <i class="fa-solid fa-graduation-cap mr-2 text-xs"></i>Курсы
+                </button>
+                <button onclick="switchTab('mentors')" id="nav-mentors" class="nav-btn px-5 py-2 rounded-full text-sm font-medium transition-all duration-300 text-gray-300 hover:text-white hover:bg-white/10">
+                    <i class="fa-solid fa-user-astronaut mr-2 text-xs"></i>Менторы
+                </button>
+                <button onclick="switchTab('contact')" id="nav-contact" class="nav-btn px-5 py-2 rounded-full text-sm font-medium transition-all duration-300 text-gray-300 hover:text-white hover:bg-white/10">
+                    <i class="fa-solid fa-envelope mr-2 text-xs"></i>Контакты & FAQ
+                </button>
+            </nav>
+
+            <!-- Action Button -->
+            <div class="hidden sm:flex items-center gap-4">
+                <button onclick="openModal('quickContactModal')" class="relative inline-flex items-center justify-center p-0.5 overflow-hidden text-sm font-semibold rounded-xl group bg-gradient-to-br from-brand-purple via-brand-pink to-brand-cyan group-hover:from-brand-purple group-hover:to-brand-cyan hover:text-white text-white shadow-lg shadow-brand-purple/25 hover:shadow-brand-purple/40 transition-all">
+                    <span class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-brand-dark/40 rounded-[10px] group-hover:bg-opacity-0 flex items-center gap-2">
+                        <i class="fa-solid fa-bolt text-amber-400"></i> Пробный урок
+                    </span>
+                </button>
+            </div>
+
+            <!-- Mobile Hamburger Button -->
+            <button id="mobile-menu-btn" onclick="toggleMobileMenu()" class="md:hidden text-gray-300 hover:text-white p-2">
+                <i class="fa-solid fa-bars text-2xl"></i>
+            </button>
+        </div>
+
+        <!-- Mobile Menu Dropdown -->
+        <div id="mobile-menu" class="hidden md:hidden glass-panel border-t border-white/10 px-4 pt-3 pb-6 flex flex-col gap-2">
+            <button onclick="switchTab('home'); toggleMobileMenu();" class="text-left px-4 py-3 rounded-xl text-white bg-white/10 font-medium">
+                <i class="fa-solid fa-house w-6 text-brand-purple"></i> Главная
+            </button>
+            <button onclick="switchTab('courses'); toggleMobileMenu();" class="text-left px-4 py-3 rounded-xl text-gray-300 hover:bg-white/5 font-medium">
+                <i class="fa-solid fa-graduation-cap w-6 text-brand-cyan"></i> Курсы
+            </button>
+            <button onclick="switchTab('mentors'); toggleMobileMenu();" class="text-left px-4 py-3 rounded-xl text-gray-300 hover:bg-white/5 font-medium">
+                <i class="fa-solid fa-user-astronaut w-6 text-brand-pink"></i> Менторы
+            </button>
+            <button onclick="switchTab('contact'); toggleMobileMenu();" class="text-left px-4 py-3 rounded-xl text-gray-300 hover:bg-white/5 font-medium">
+                <i class="fa-solid fa-envelope w-6 text-brand-emerald"></i> Контакты & FAQ
+            </button>
+            <button onclick="openModal('quickContactModal'); toggleMobileMenu();" class="mt-2 w-full py-3 bg-gradient-to-r from-brand-purple to-brand-pink text-white rounded-xl font-semibold shadow-lg shadow-brand-purple/30 text-center">
+                <i class="fa-solid fa-bolt mr-2"></i> Пробный урок
+            </button>
+        </div>
+    </header>
+
+    <main class="relative z-10 flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+        <!-- =================================================================== -->
+        <!-- TAB 1: HOME SECTION                                                 -->
+        <!-- =================================================================== -->
+        <div id="tab-home" class="tab-content active space-y-24">
+            
+            <!-- Hero Banner -->
+            <section class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center pt-6 lg:pt-12">
+                <div class="lg:col-span-7 space-y-8">
+                    
+                    <!-- Tech Status Badge -->
+                    <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-panel border border-brand-purple/40 text-xs font-semibold text-purple-300 shadow-inner">
+                        <span class="w-2.5 h-2.5 rounded-full bg-brand-emerald animate-pulse"></span>
+                        <span>Набор на осенне-зимний сезон 2026 открыт</span>
+                        <span class="bg-brand-purple/40 text-purple-200 text-[10px] px-2 py-0.5 rounded-full">NEW</span>
+                    </div>
+
+                    <!-- Main Hero Heading -->
+                    <h1 class="text-4xl sm:text-6xl font-black tracking-tight leading-none">
+                        Твой импульс в мир <br>
+                        <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-purple via-brand-pink to-brand-cyan">
+                            высоких технологий
+                        </span>
+                    </h1>
+
+                    <p class="text-gray-300 text-lg sm:text-xl max-w-2xl font-normal leading-relaxed">
+                        Освой востребованные IT-профессии с нуля под руководством Senior-инженеров из Yandex, Meta и Google. 80% практики, реальные кейсы и гарантированная стажировка.
+                    </p>
+
+                    <!-- CTA Group -->
+                    <div class="flex flex-col sm:flex-row gap-4 pt-2">
+                        <button onclick="switchTab('courses')" class="px-8 py-4 rounded-xl bg-gradient-to-r from-brand-purple via-purple-600 to-brand-pink hover:from-purple-600 hover:to-brand-pink text-white font-bold text-base shadow-xl shadow-brand-purple/30 hover:shadow-brand-purple/50 hover:scale-[1.02] transition-all flex items-center justify-center gap-3">
+                            <span>Выбрать направление</span>
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                        <a href="#quiz-section" class="px-8 py-4 rounded-xl glass-panel hover:bg-white/10 text-white font-semibold text-base border border-white/15 transition-all flex items-center justify-center gap-3">
+                            <i class="fa-solid fa-compass text-brand-cyan"></i>
+                            <span>Пройти тест на профессию</span>
+                        </a>
+                    </div>
+
+                    <!-- Trust indicators -->
+                    <div class="pt-6 flex flex-wrap items-center gap-8 border-t border-white/10">
+                        <div class="flex items-center gap-3">
+                            <div class="flex -space-x-3">
+                                <img class="w-10 h-10 rounded-full border-2 border-brand-dark object-cover" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80" alt="Avatar">
+                                <img class="w-10 h-10 rounded-full border-2 border-brand-dark object-cover" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&auto=format&fit=crop&q=80" alt="Avatar">
+                                <img class="w-10 h-10 rounded-full border-2 border-brand-dark object-cover" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&auto=format&fit=crop&q=80" alt="Avatar">
+                            </div>
+                            <div>
+                                <div class="flex text-amber-400 text-xs">
+                                    <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                                </div>
+                                <p class="text-xs text-gray-400 mt-0.5"><strong class="text-white">4.9/5</strong> оценка 2,400+ студентов</p>
+                            </div>
+                        </div>
+                        <div class="h-8 w-[1px] bg-white/10 hidden sm:block"></div>
+                        <div class="text-xs text-gray-400">
+                            <p class="font-bold text-white text-sm">94% Трудоустройство</p>
+                            <p>в первые 3 месяца после выпуска</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Interactive Hero Code Floating Card -->
+                <div class="lg:col-span-5 relative">
+                    <div class="relative mx-auto max-w-md lg:max-w-none animate-float">
+                        <!-- Glowing backdrop -->
+                        <div class="absolute -inset-1 bg-gradient-to-r from-brand-purple to-brand-cyan rounded-3xl blur-xl opacity-40"></div>
+                        
+                        <!-- Terminal Box -->
+                        <div class="relative glass-panel rounded-2xl border border-white/15 overflow-hidden shadow-2xl">
+                            <!-- Terminal Header -->
+                            <div class="bg-brand-dark/80 px-4 py-3 border-b border-white/10 flex items-center justify-between">
+                                <div class="flex items-center gap-2">
+                                    <span class="w-3 h-3 rounded-full bg-red-500/80 inline-block"></span>
+                                    <span class="w-3 h-3 rounded-full bg-amber-500/80 inline-block"></span>
+                                    <span class="w-3 h-3 rounded-full bg-emerald-500/80 inline-block"></span>
+                                </div>
+                                <span class="text-xs font-mono text-gray-400">codepulse_career.ts</span>
+                                <span class="text-xs text-brand-cyan"><i class="fa-solid fa-circle-check"></i> Connected</span>
+                            </div>
+
+                            <!-- Terminal Body -->
+                            <div class="p-5 font-mono text-xs sm:text-sm space-y-3 leading-relaxed text-gray-300">
+                                <div>
+                                    <span class="text-purple-400">import</span> { <span class="text-yellow-300">Student</span>, <span class="text-yellow-300">CareerGoal</span> } <span class="text-purple-400">from</span> <span class="text-emerald-400">'@codepulse/core'</span>;
+                                </div>
+                                <div class="pt-2">
+                                    <span class="text-blue-400">const</span> <span class="text-cyan-300">you</span> = <span class="text-purple-400">new</span> <span class="text-yellow-300">Student</span>({
+                                </div>
+                                <div class="pl-4">
+                                    experience: <span class="text-emerald-400">'0_Level'</span>,<br>
+                                    motivation: <span class="text-emerald-400">'High_Salary_and_Freedom'</span>,<br>
+                                    dreamCompany: [<span class="text-emerald-400">'Yandex'</span>, <span class="text-emerald-400">'Google'</span>, <span class="text-emerald-400">'Startup'</span>]
+                                </div>
+                                <div>};</div>
+                                <div class="pt-2">
+                                    <span class="text-purple-400">async function</span> <span class="text-blue-300">levelUp</span>() {
+                                </div>
+                                <div class="pl-4 text-gray-400">
+                                    <span class="text-purple-400">await</span> you.<span class="text-yellow-300">learnPracticing</span>();<br>
+                                    <span class="text-purple-400">await</span> you.<span class="text-yellow-300">buildRealProjects</span>(5);<br>
+                                    <span class="text-purple-400">return</span> you.<span class="text-yellow-300">getJuniorOffer</span>({ minSalary: <span class="text-amber-400">'$1,800'</span> });
+                                </div>
+                                <div>}</div>
+                                <div class="pt-2 text-emerald-400 animate-pulse">
+                                    &gt; Output: "Offer received! Welcome to IT 🎉"
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Floating Badge 1 -->
+                        <div class="absolute -bottom-6 -left-6 glass-panel px-4 py-3 rounded-xl border border-brand-purple/50 flex items-center gap-3 shadow-xl backdrop-blur-xl">
+                            <div class="w-10 h-10 rounded-lg bg-brand-purple/30 flex items-center justify-center text-brand-purple text-xl">
+                                <i class="fa-solid fa-rocket"></i>
+                            </div>
+                            <div>
+                                <p class="text-xs text-gray-400">Средний старт</p>
+                                <p class="text-sm font-bold text-white">$1,800 / мес</p>
+                            </div>
+                        </div>
+
+                        <!-- Floating Badge 2 -->
+                        <div class="absolute -top-6 -right-6 glass-panel px-4 py-3 rounded-xl border border-brand-cyan/50 flex items-center gap-3 shadow-xl backdrop-blur-xl">
+                            <div class="w-10 h-10 rounded-lg bg-brand-cyan/30 flex items-center justify-center text-brand-cyan text-xl">
+                                <i class="fa-solid fa-briefcase"></i>
+                            </div>
+                            <div>
+                                <p class="text-xs text-gray-400">Партнеров</p>
+                                <p class="text-sm font-bold text-white">120+ IT Компаний</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Marquee Technologies Ticker -->
+            <section class="py-4 glass-panel rounded-2xl overflow-hidden border border-white/10">
+                <div class="flex space-x-12 animate-marquee whitespace-nowrap text-gray-400 font-mono text-sm">
+                    <span class="flex items-center gap-2"><i class="fa-brands fa-react text-cyan-400 text-lg"></i> React 19</span>
+                    <span class="flex items-center gap-2"><i class="fa-brands fa-python text-yellow-400 text-lg"></i> Python AI</span>
+                    <span class="flex items-center gap-2"><i class="fa-brands fa-figma text-pink-400 text-lg"></i> Figma Pro</span>
+                    <span class="flex items-center gap-2"><i class="fa-brands fa-node-js text-emerald-400 text-lg"></i> Node.js</span>
+                    <span class="flex items-center gap-2"><i class="fa-brands fa-docker text-blue-400 text-lg"></i> Docker</span>
+                    <span class="flex items-center gap-2"><i class="fa-solid fa-database text-purple-400 text-lg"></i> PostgreSQL</span>
+                    <span class="flex items-center gap-2"><i class="fa-brands fa-js text-yellow-300 text-lg"></i> TypeScript</span>
+                    <span class="flex items-center gap-2"><i class="fa-solid fa-brain text-pink-400 text-lg"></i> PyTorch LLMs</span>
+                    <!-- Duplicate for infinite look -->
+                    <span class="flex items-center gap-2"><i class="fa-brands fa-react text-cyan-400 text-lg"></i> React 19</span>
+                    <span class="flex items-center gap-2"><i class="fa-brands fa-python text-yellow-400 text-lg"></i> Python AI</span>
+                    <span class="flex items-center gap-2"><i class="fa-brands fa-figma text-pink-400 text-lg"></i> Figma Pro</span>
+                    <span class="flex items-center gap-2"><i class="fa-brands fa-node-js text-emerald-400 text-lg"></i> Node.js</span>
+                </div>
+            </section>
+
+            <!-- Stats Counter Grid -->
+            <section class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                <div class="glass-card p-6 rounded-2xl text-center border-t-2 border-t-brand-purple">
+                    <p class="text-3xl sm:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-brand-purple to-purple-300 font-mono">4,500+</p>
+                    <p class="text-gray-400 text-sm mt-2 font-medium">Выпускников за 5 лет</p>
+                </div>
+                <div class="glass-card p-6 rounded-2xl text-center border-t-2 border-t-brand-pink">
+                    <p class="text-3xl sm:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-brand-pink to-pink-300 font-mono">$1,800</p>
+                    <p class="text-gray-400 text-sm mt-2 font-medium">Средняя стартовая зарплата</p>
+                </div>
+                <div class="glass-card p-6 rounded-2xl text-center border-t-2 border-t-brand-cyan">
+                    <p class="text-3xl sm:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-brand-cyan to-cyan-300 font-mono">94%</p>
+                    <p class="text-gray-400 text-sm mt-2 font-medium">Успешно трудоустроены</p>
+                </div>
+                <div class="glass-card p-6 rounded-2xl text-center border-t-2 border-t-brand-emerald">
+                    <p class="text-3xl sm:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-brand-emerald to-emerald-300 font-mono">120+</p>
+                    <p class="text-gray-400 text-sm mt-2 font-medium">Компаний-партнеров</p>
+                </div>
+            </section>
+
+            <!-- Interactive Career Quiz Widget -->
+            <section id="quiz-section" class="glass-panel p-8 sm:p-12 rounded-3xl border border-brand-purple/30 relative overflow-hidden">
+                <div class="max-w-3xl mx-auto space-y-8">
+                    <div class="text-center space-y-3">
+                        <span class="text-xs font-mono uppercase tracking-widest text-brand-cyan bg-brand-cyan/10 px-3 py-1 rounded-full border border-brand-cyan/30">Интерактивный тест</span>
+                        <h2 class="text-3xl sm:text-4xl font-extrabold">Какая IT-профессия тебе подходит?</h2>
+                        <p class="text-gray-400 text-sm">Ответь на 3 простых вопроса и получи персональную рекомендацию от AI-алгоритма</p>
+                    </div>
+
+                    <!-- Quiz Box -->
+                    <div id="quiz-container" class="glass-card p-6 sm:p-8 rounded-2xl border border-white/10 space-y-6">
+                        <!-- Question Step Indicator -->
+                        <div class="flex items-center justify-between text-xs font-mono text-gray-400 border-b border-white/10 pb-4">
+                            <span id="quiz-step-title">Вопрос 1 из 3</span>
+                            <div class="flex gap-1.5">
+                                <span id="dot-1" class="w-3 h-3 rounded-full bg-brand-purple"></span>
+                                <span id="dot-2" class="w-3 h-3 rounded-full bg-white/20"></span>
+                                <span id="dot-3" class="w-3 h-3 rounded-full bg-white/20"></span>
+                            </div>
+                        </div>
+
+                        <!-- Question Content Holder -->
+                        <div id="quiz-question-holder" class="space-y-4">
+                            <h3 id="quiz-question-text" class="text-xl font-bold text-white">Что тебе ближе в повседневной работе?</h3>
+                            <div id="quiz-options" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <!-- Dynamic Options Populated via JS -->
+                            </div>
+                        </div>
+
+                        <!-- Quiz Result Holder (Hidden initially) -->
+                        <div id="quiz-result-holder" class="hidden text-center space-y-6 py-4">
+                            <div class="w-20 h-20 rounded-full bg-gradient-to-tr from-brand-purple to-brand-cyan mx-auto flex items-center justify-center text-3xl text-white shadow-xl shadow-brand-purple/30">
+                                <i class="fa-solid fa-wand-magic-sparkles"></i>
+                            </div>
+                            <div class="space-y-2">
+                                <p class="text-sm text-gray-400 font-mono">Твой идеальный выбор:</p>
+                                <h3 id="result-title" class="text-2xl sm:text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-brand-purple to-brand-cyan">
+                                    Frontend-разработчик
+                                </h3>
+                                <p id="result-desc" class="text-gray-300 text-sm max-w-lg mx-auto">
+                                    Тебе нравится создавать визуально красивые интерфейсы и видеть мгновенный результат своего кода.
+                                </p>
+                            </div>
+                            <div class="flex justify-center gap-4 pt-2">
+                                <button onclick="resetQuiz()" class="px-5 py-2.5 rounded-xl border border-white/15 text-sm text-gray-300 hover:text-white hover:bg-white/5">Пройти заново</button>
+                                <button onclick="switchTab('courses')" class="px-6 py-2.5 rounded-xl bg-brand-purple hover:bg-purple-600 text-white font-semibold text-sm shadow-lg shadow-brand-purple/30">Смотреть курсы</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Why Us Cards -->
+            <section class="space-y-12">
+                <div class="text-center max-w-2xl mx-auto space-y-3">
+                    <h2 class="text-3xl font-extrabold">Почему выбирают <span class="text-brand-purple">CodePulse</span></h2>
+                    <p class="text-gray-400 text-sm">Мы переосмыслили IT-образование, избавившись от лишней теории в пользу реальной практики</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="glass-card p-8 rounded-2xl border border-white/10 space-y-4">
+                        <div class="w-14 h-14 rounded-2xl bg-brand-purple/20 border border-brand-purple/40 flex items-center justify-center text-brand-purple text-2xl">
+                            <i class="fa-solid fa-laptop-code"></i>
+                        </div>
+                        <h3 class="text-xl font-bold">80% Практики & Проекты</h3>
+                        <p class="text-gray-400 text-sm leading-relaxed">
+                            С первого дня вы пишете чистый код. В вашем портфолио будет 4-5 готовых реальных проектов для демонстрации работодателям.
+                        </p>
+                    </div>
+
+                    <div class="glass-card p-8 rounded-2xl border border-white/10 space-y-4">
+                        <div class="w-14 h-14 rounded-2xl bg-brand-cyan/20 border border-brand-cyan/40 flex items-center justify-center text-brand-cyan text-2xl">
+                            <i class="fa-solid fa-users-viewfinder"></i>
+                        </div>
+                        <h3 class="text-xl font-bold">Личный Ментор & Code Review</h3>
+                        <p class="text-gray-400 text-sm leading-relaxed">
+                            Опытные действующие разработчики проверяют каждое ваше домашнее задание, дают разбор ошибок и проводят 1-on-1 созвоны.
+                        </p>
+                    </div>
+
+                    <div class="glass-card p-8 rounded-2xl border border-white/10 space-y-4">
+                        <div class="w-14 h-14 rounded-2xl bg-brand-pink/20 border border-brand-pink/40 flex items-center justify-center text-brand-pink text-2xl">
+                            <i class="fa-solid fa-handshake-angle"></i>
+                        </div>
+                        <h3 class="text-xl font-bold">Гарантия Каррьерной Поддержки</h3>
+                        <p class="text-gray-400 text-sm leading-relaxed">
+                            HR-эксперты помогают составить резюме, подготавливают к техническим собеседованиям и передают контакты партнерам.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Success Stories Carousel / Testimonials -->
+            <section class="space-y-8">
+                <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+                    <div>
+                        <span class="text-xs font-mono uppercase text-brand-pink tracking-widest">Истории успеха</span>
+                        <h2 class="text-3xl font-extrabold mt-1">От новичков до Senior в IT</h2>
+                    </div>
+                    <button onclick="switchTab('courses')" class="text-sm font-semibold text-brand-purple hover:text-purple-300 flex items-center gap-2">
+                        <span>Посмотреть все направления</span>
+                        <i class="fa-solid fa-arrow-right text-xs"></i>
+                    </button>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <!-- Story 1 -->
+                    <div class="glass-card p-6 rounded-2xl space-y-4 border border-white/10 flex flex-col justify-between">
+                        <div class="space-y-3">
+                            <div class="flex items-center gap-1 text-amber-400 text-xs">
+                                <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                            </div>
+                            <p class="text-gray-300 text-sm italic">
+                                «До CodePulse работала администратором в отеле. Через 7 месяцев интенсивной учебы на Python-курс получила оффер в Yandex Data Solutions!»
+                            </p>
+                        </div>
+                        <div class="flex items-center gap-4 pt-4 border-t border-white/10">
+                            <img class="w-12 h-12 rounded-full object-cover border border-brand-purple" src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=120&auto=format&fit=crop&q=80" alt="Алина К.">
+                            <div>
+                                <h4 class="font-bold text-white text-sm">Алина Ковалева</h4>
+                                <p class="text-xs text-gray-400">Python Developer @ Yandex</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Story 2 -->
+                    <div class="glass-card p-6 rounded-2xl space-y-4 border border-white/10 flex flex-col justify-between">
+                        <div class="space-y-3">
+                            <div class="flex items-center gap-1 text-amber-400 text-xs">
+                                <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                            </div>
+                            <p class="text-gray-300 text-sm italic">
+                                «Преподаватели — огонь! Разбор реальных архитектурных задач помог сходу пройти собеседование на позицию Middle React Developer.»
+                            </p>
+                        </div>
+                        <div class="flex items-center gap-4 pt-4 border-t border-white/10">
+                            <img class="w-12 h-12 rounded-full object-cover border border-brand-cyan" src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=120&auto=format&fit=crop&q=80" alt="Игорь М.">
+                            <div>
+                                <h4 class="font-bold text-white text-sm">Игорь Морозов</h4>
+                                <p class="text-xs text-gray-400">Frontend Engineer @ Fintech Pro</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Story 3 -->
+                    <div class="glass-card p-6 rounded-2xl space-y-4 border border-white/10 flex flex-col justify-between">
+                        <div class="space-y-3">
+                            <div class="flex items-center gap-1 text-amber-400 text-xs">
+                                <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                            </div>
+                            <p class="text-gray-300 text-sm italic">
+                                «Курс UI/UX дизайна превзошел все ожидания. Уже во время учебы нашел 2 фриланс-клиентов и полностью отбил стоимость курса.»
+                            </p>
+                        </div>
+                        <div class="flex items-center gap-4 pt-4 border-t border-white/10">
+                            <img class="w-12 h-12 rounded-full object-cover border border-brand-pink" src="https://images.unsplash.com/photo-1580489944761-15a19d654956?w=120&auto=format&fit=crop&q=80" alt="Дария С.">
+                            <div>
+                                <h4 class="font-bold text-white text-sm">Дария Шарипова</h4>
+                                <p class="text-xs text-gray-400">Product Designer @ EPAM</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+
+        <!-- =================================================================== -->
+        <!-- TAB 2: COURSES SECTION                                              -->
+        <!-- =================================================================== -->
+        <div id="tab-courses" class="tab-content space-y-12">
+            
+            <!-- Courses Header -->
+            <div class="text-center max-w-3xl mx-auto space-y-4">
+                <span class="text-xs font-mono uppercase tracking-widest text-brand-purple bg-brand-purple/10 px-3 py-1 rounded-full border border-brand-purple/30">Каталог программ 2026</span>
+                <h1 class="text-3xl sm:text-5xl font-black">Профессии, которые меняют жизнь</h1>
+                <p class="text-gray-400 text-base">Выбери свое направление: от веб-разработки и искусственного интеллекта до дизайна и тестирования</p>
+            </div>
+
+            <!-- Filter Buttons -->
+            <div class="flex flex-wrap items-center justify-center gap-2 sm:gap-3">
+                <button onclick="filterCourses('all')" class="course-filter-btn active px-5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all bg-brand-purple text-white shadow-lg shadow-brand-purple/20">Все курсы</button>
+                <button onclick="filterCourses('web')" class="course-filter-btn px-5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all bg-white/5 text-gray-300 hover:text-white hover:bg-white/10">Веб-разработка</button>
+                <button onclick="filterCourses('python')" class="course-filter-btn px-5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all bg-white/5 text-gray-300 hover:text-white hover:bg-white/10">Python & AI</button>
+                <button onclick="filterCourses('design')" class="course-filter-btn px-5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all bg-white/5 text-gray-300 hover:text-white hover:bg-white/10">UI/UX Дизайн</button>
+                <button onclick="filterCourses('mobile')" class="course-filter-btn px-5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all bg-white/5 text-gray-300 hover:text-white hover:bg-white/10">Мобильная разработка</button>
+                <button onclick="filterCourses('qa')" class="course-filter-btn px-5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all bg-white/5 text-gray-300 hover:text-white hover:bg-white/10">QA & DevOps</button>
+            </div>
+
+            <!-- Courses Grid -->
+            <div id="courses-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                
+                <!-- Course 1 -->
+                <div class="course-card glass-card rounded-2xl border border-white/10 overflow-hidden flex flex-col justify-between" data-category="web">
+                    <div class="p-6 space-y-4">
+                        <div class="flex items-center justify-between">
+                            <span class="px-3 py-1 rounded-full text-xs font-bold bg-brand-purple/20 text-brand-purple border border-brand-purple/40">ХИТ ПРОДАЖ</span>
+                            <span class="text-xs text-gray-400 font-mono"><i class="fa-regular fa-clock mr-1"></i>9 месяцев</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-white">Fullstack Web Developer</h3>
+                        <p class="text-gray-400 text-sm leading-relaxed">
+                            Полное погружение в создание современных веб-приложений с нуля на React 19, TypeScript, Node.js и PostgreSQL.
+                        </p>
+                        
+                        <!-- Tech stack tags -->
+                        <div class="flex flex-wrap gap-1.5 pt-2">
+                            <span class="text-[11px] px-2.5 py-1 rounded-md bg-white/5 text-gray-300 font-mono">React</span>
+                            <span class="text-[11px] px-2.5 py-1 rounded-md bg-white/5 text-gray-300 font-mono">TypeScript</span>
+                            <span class="text-[11px] px-2.5 py-1 rounded-md bg-white/5 text-gray-300 font-mono">Node.js</span>
+                            <span class="text-[11px] px-2.5 py-1 rounded-md bg-white/5 text-gray-300 font-mono">Next.js</span>
+                        </div>
+                    </div>
+
+                    <div class="p-6 bg-white/[0.02] border-t border-white/10 space-y-4">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-[10px] uppercase tracking-wider text-gray-400 font-mono">Старт зарплаты</p>
+                                <p class="text-lg font-bold text-brand-emerald">$1,600 / мес</p>
+                            </div>
+                            <div class="text-right">
+                                <p class="text-[10px] uppercase tracking-wider text-gray-400 font-mono">Стоимость</p>
+                                <p class="text-lg font-bold text-white">$120 / мес</p>
+                            </div>
+                        </div>
+
+                        <div class="flex gap-2">
+                            <button onclick="openSyllabusModal('fullstack')" class="w-1/2 py-2.5 rounded-xl border border-white/15 text-xs font-semibold hover:bg-white/10 transition-all text-gray-200">
+                                Программа
+                            </button>
+                            <button onclick="openEnrollModal('Fullstack Web Developer')" class="w-1/2 py-2.5 rounded-xl bg-brand-purple hover:bg-purple-600 text-white text-xs font-semibold shadow-lg shadow-brand-purple/20 transition-all">
+                                Записаться
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Course 2 -->
+                <div class="course-card glass-card rounded-2xl border border-white/10 overflow-hidden flex flex-col justify-between" data-category="python">
+                    <div class="p-6 space-y-4">
+                        <div class="flex items-center justify-between">
+                            <span class="px-3 py-1 rounded-full text-xs font-bold bg-brand-cyan/20 text-brand-cyan border border-brand-cyan/40">TRENDING</span>
+                            <span class="text-xs text-gray-400 font-mono"><i class="fa-regular fa-clock mr-1"></i>8 месяцев</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-white">Python Data Science & AI</h3>
+                        <p class="text-gray-400 text-sm leading-relaxed">
+                            Изучи анализ данных, машинное обучение и создание нейросетей на Python, PyTorch и Pandas.
+                        </p>
+
+                        <div class="flex flex-wrap gap-1.5 pt-2">
+                            <span class="text-[11px] px-2.5 py-1 rounded-md bg-white/5 text-gray-300 font-mono">Python</span>
+                            <span class="text-[11px] px-2.5 py-1 rounded-md bg-white/5 text-gray-300 font-mono">PyTorch</span>
+                            <span class="text-[11px] px-2.5 py-1 rounded-md bg-white/5 text-gray-300 font-mono">Pandas</span>
+                            <span class="text-[11px] px-2.5 py-1 rounded-md bg-white/5 text-gray-300 font-mono">LLMs</span>
+                        </div>
+                    </div>
+
+                    <div class="p-6 bg-white/[0.02] border-t border-white/10 space-y-4">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-[10px] uppercase tracking-wider text-gray-400 font-mono">Старт зарплаты</p>
+                                <p class="text-lg font-bold text-brand-emerald">$2,000 / мес</p>
+                            </div>
+                            <div class="text-right">
+                                <p class="text-[10px] uppercase tracking-wider text-gray-400 font-mono">Стоимость</p>
+                                <p class="text-lg font-bold text-white">$140 / мес</p>
+                            </div>
+                        </div>
+
+                        <div class="flex gap-2">
+                            <button onclick="openSyllabusModal('python')" class="w-1/2 py-2.5 rounded-xl border border-white/15 text-xs font-semibold hover:bg-white/10 transition-all text-gray-200">
+                                Программа
+                            </button>
+                            <button onclick="openEnrollModal('Python Data Science & AI')" class="w-1/2 py-2.5 rounded-xl bg-brand-cyan hover:bg-cyan-600 text-white text-xs font-semibold shadow-lg shadow-brand-cyan/20 transition-all">
+                                Записаться
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Course 3 -->
+                <div class="course-card glass-card rounded-2xl border border-white/10 overflow-hidden flex flex-col justify-between" data-category="design">
+                    <div class="p-6 space-y-4">
+                        <div class="flex items-center justify-between">
+                            <span class="px-3 py-1 rounded-full text-xs font-bold bg-brand-pink/20 text-brand-pink border border-brand-pink/40">CREATIVE</span>
+                            <span class="text-xs text-gray-400 font-mono"><i class="fa-regular fa-clock mr-1"></i>6 месяцев</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-white">UI/UX & Product Design</h3>
+                        <p class="text-gray-400 text-sm leading-relaxed">
+                            Создавай удобные веб и мобильные интерфейсы, проводи исследования и проектируй дизайн-системы в Figma.
+                        </p>
+
+                        <div class="flex flex-wrap gap-1.5 pt-2">
+                            <span class="text-[11px] px-2.5 py-1 rounded-md bg-white/5 text-gray-300 font-mono">Figma</span>
+                            <span class="text-[11px] px-2.5 py-1 rounded-md bg-white/5 text-gray-300 font-mono">UX Research</span>
+                            <span class="text-[11px] px-2.5 py-1 rounded-md bg-white/5 text-gray-300 font-mono">Prototyping</span>
+                            <span class="text-[11px] px-2.5 py-1 rounded-md bg-white/5 text-gray-300 font-mono">Design Systems</span>
+                        </div>
+                    </div>
+
+                    <div class="p-6 bg-white/[0.02] border-t border-white/10 space-y-4">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-[10px] uppercase tracking-wider text-gray-400 font-mono">Старт зарплаты</p>
+                                <p class="text-lg font-bold text-brand-emerald">$1,400 / мес</p>
+                            </div>
+                            <div class="text-right">
+                                <p class="text-[10px] uppercase tracking-wider text-gray-400 font-mono">Стоимость</p>
+                                <p class="text-lg font-bold text-white">$100 / мес</p>
+                            </div>
+                        </div>
+
+                        <div class="flex gap-2">
+                            <button onclick="openSyllabusModal('design')" class="w-1/2 py-2.5 rounded-xl border border-white/15 text-xs font-semibold hover:bg-white/10 transition-all text-gray-200">
+                                Программа
+                            </button>
+                            <button onclick="openEnrollModal('UI/UX & Product Design')" class="w-1/2 py-2.5 rounded-xl bg-brand-pink hover:bg-pink-600 text-white text-xs font-semibold shadow-lg shadow-brand-pink/20 transition-all">
+                                Записаться
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Course 4 -->
+                <div class="course-card glass-card rounded-2xl border border-white/10 overflow-hidden flex flex-col justify-between" data-category="mobile">
+                    <div class="p-6 space-y-4">
+                        <div class="flex items-center justify-between">
+                            <span class="px-3 py-1 rounded-full text-xs font-bold bg-brand-blue/20 text-brand-blue border border-brand-blue/40">MOBILE</span>
+                            <span class="text-xs text-gray-400 font-mono"><i class="fa-regular fa-clock mr-1"></i>7 месяцев</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-white">Flutter & iOS/Android Dev</h3>
+                        <p class="text-gray-400 text-sm leading-relaxed">
+                            Кроссплатформенная разработка мобильных приложений для App Store и Google Play на Dart & Flutter.
+                        </p>
+
+                        <div class="flex flex-wrap gap-1.5 pt-2">
+                            <span class="text-[11px] px-2.5 py-1 rounded-md bg-white/5 text-gray-300 font-mono">Flutter</span>
+                            <span class="text-[11px] px-2.5 py-1 rounded-md bg-white/5 text-gray-300 font-mono">Dart</span>
+                            <span class="text-[11px] px-2.5 py-1 rounded-md bg-white/5 text-gray-300 font-mono">Firebase</span>
+                            <span class="text-[11px] px-2.5 py-1 rounded-md bg-white/5 text-gray-300 font-mono">REST API</span>
+                        </div>
+                    </div>
+
+                    <div class="p-6 bg-white/[0.02] border-t border-white/10 space-y-4">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-[10px] uppercase tracking-wider text-gray-400 font-mono">Старт зарплаты</p>
+                                <p class="text-lg font-bold text-brand-emerald">$1,700 / мес</p>
+                            </div>
+                            <div class="text-right">
+                                <p class="text-[10px] uppercase tracking-wider text-gray-400 font-mono">Стоимость</p>
+                                <p class="text-lg font-bold text-white">$125 / мес</p>
+                            </div>
+                        </div>
+
+                        <div class="flex gap-2">
+                            <button onclick="openSyllabusModal('mobile')" class="w-1/2 py-2.5 rounded-xl border border-white/15 text-xs font-semibold hover:bg-white/10 transition-all text-gray-200">
+                                Программа
+                            </button>
+                            <button onclick="openEnrollModal('Flutter & Mobile Dev')" class="w-1/2 py-2.5 rounded-xl bg-brand-blue hover:bg-blue-600 text-white text-xs font-semibold shadow-lg shadow-brand-blue/20 transition-all">
+                                Записаться
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Course 5 -->
+                <div class="course-card glass-card rounded-2xl border border-white/10 overflow-hidden flex flex-col justify-between" data-category="qa">
+                    <div class="p-6 space-y-4">
+                        <div class="flex items-center justify-between">
+                            <span class="px-3 py-1 rounded-full text-xs font-bold bg-brand-amber/20 text-brand-amber border border-brand-amber/40">FAST TRACK</span>
+                            <span class="text-xs text-gray-400 font-mono"><i class="fa-regular fa-clock mr-1"></i>5 месяцев</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-white">QA Automation Engineer</h3>
+                        <p class="text-gray-400 text-sm leading-relaxed">
+                            Освой автоматизацию тестирования на Python, Playwright и Postman. Самый быстрый вход в IT.
+                        </p>
+
+                        <div class="flex flex-wrap gap-1.5 pt-2">
+                            <span class="text-[11px] px-2.5 py-1 rounded-md bg-white/5 text-gray-300 font-mono">Python</span>
+                            <span class="text-[11px] px-2.5 py-1 rounded-md bg-white/5 text-gray-300 font-mono">Playwright</span>
+                            <span class="text-[11px] px-2.5 py-1 rounded-md bg-white/5 text-gray-300 font-mono">PyTest</span>
+                            <span class="text-[11px] px-2.5 py-1 rounded-md bg-white/5 text-gray-300 font-mono">Postman</span>
+                        </div>
+                    </div>
+
+                    <div class="p-6 bg-white/[0.02] border-t border-white/10 space-y-4">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-[10px] uppercase tracking-wider text-gray-400 font-mono">Старт зарплаты</p>
+                                <p class="text-lg font-bold text-brand-emerald">$1,300 / мес</p>
+                            </div>
+                            <div class="text-right">
+                                <p class="text-[10px] uppercase tracking-wider text-gray-400 font-mono">Стоимость</p>
+                                <p class="text-lg font-bold text-white">$95 / мес</p>
+                            </div>
+                        </div>
+
+                        <div class="flex gap-2">
+                            <button onclick="openSyllabusModal('qa')" class="w-1/2 py-2.5 rounded-xl border border-white/15 text-xs font-semibold hover:bg-white/10 transition-all text-gray-200">
+                                Программа
+                            </button>
+                            <button onclick="openEnrollModal('QA Automation Engineer')" class="w-1/2 py-2.5 rounded-xl bg-brand-amber hover:bg-amber-600 text-white text-xs font-semibold shadow-lg shadow-brand-amber/20 transition-all">
+                                Записаться
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Course 6 -->
+                <div class="course-card glass-card rounded-2xl border border-white/10 overflow-hidden flex flex-col justify-between" data-category="qa">
+                    <div class="p-6 space-y-4">
+                        <div class="flex items-center justify-between">
+                            <span class="px-3 py-1 rounded-full text-xs font-bold bg-brand-emerald/20 text-brand-emerald border border-brand-emerald/40">HIGH SALARY</span>
+                            <span class="text-xs text-gray-400 font-mono"><i class="fa-regular fa-clock mr-1"></i>7 месяцев</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-white">DevOps & Cloud Architect</h3>
+                        <p class="text-gray-400 text-sm leading-relaxed">
+                            Настройка CI/CD pipelines, контейнеризация Docker, оркестрация Kubernetes и облака AWS/GCP.
+                        </p>
+
+                        <div class="flex flex-wrap gap-1.5 pt-2">
+                            <span class="text-[11px] px-2.5 py-1 rounded-md bg-white/5 text-gray-300 font-mono">Docker</span>
+                            <span class="text-[11px] px-2.5 py-1 rounded-md bg-white/5 text-gray-300 font-mono">Kubernetes</span>
+                            <span class="text-[11px] px-2.5 py-1 rounded-md bg-white/5 text-gray-300 font-mono">AWS</span>
+                            <span class="text-[11px] px-2.5 py-1 rounded-md bg-white/5 text-gray-300 font-mono">Terraform</span>
+                        </div>
+                    </div>
+
+                    <div class="p-6 bg-white/[0.02] border-t border-white/10 space-y-4">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-[10px] uppercase tracking-wider text-gray-400 font-mono">Старт зарплаты</p>
+                                <p class="text-lg font-bold text-brand-emerald">$2,200 / мес</p>
+                            </div>
+                            <div class="text-right">
+                                <p class="text-[10px] uppercase tracking-wider text-gray-400 font-mono">Стоимость</p>
+                                <p class="text-lg font-bold text-white">$150 / мес</p>
+                            </div>
+                        </div>
+
+                        <div class="flex gap-2">
+                            <button onclick="openSyllabusModal('devops')" class="w-1/2 py-2.5 rounded-xl border border-white/15 text-xs font-semibold hover:bg-white/10 transition-all text-gray-200">
+                                Программа
+                            </button>
+                            <button onclick="openEnrollModal('DevOps & Cloud Architect')" class="w-1/2 py-2.5 rounded-xl bg-brand-emerald hover:bg-emerald-600 text-white text-xs font-semibold shadow-lg shadow-brand-emerald/20 transition-all">
+                                Записаться
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Tuition Fee Interactive Calculator -->
+            <section class="glass-panel p-8 sm:p-12 rounded-3xl border border-white/15 space-y-8">
+                <div class="text-center max-w-2xl mx-auto space-y-2">
+                    <span class="text-xs font-mono uppercase text-brand-cyan">Интерактивный калькулятор</span>
+                    <h2 class="text-3xl font-extrabold">Рассчитай стоимость своего обучения</h2>
+                    <p class="text-gray-400 text-sm">Гибкие условия оплаты и беспроцентная рассрочка от банков-партнеров</p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                    <div class="lg:col-span-7 space-y-6">
+                        
+                        <!-- Select Course -->
+                        <div class="space-y-2">
+                            <label class="text-sm font-semibold text-gray-300">Выбери курс:</label>
+                            <select id="calc-course-select" onchange="updateCalculator()" class="w-full glass-input p-3.5 rounded-xl text-sm">
+                                <option value="1080">Fullstack Web Developer ($120/мес)</option>
+                                <option value="1120">Python Data Science & AI ($140/мес)</option>
+                                <option value="600">UI/UX & Product Design ($100/мес)</option>
+                                <option value="875">Flutter Mobile Dev ($125/мес)</option>
+                                <option value="475">QA Automation Engineer ($95/мес)</option>
+                                <option value="1050">DevOps & Cloud Architect ($150/мес)</option>
+                            </select>
+                        </div>
+
+                        <!-- Choose Format -->
+                        <div class="space-y-2">
+                            <label class="text-sm font-semibold text-gray-300">Формат обучения:</label>
+                            <div class="grid grid-cols-2 gap-4">
+                                <button type="button" onclick="setCalcFormat('online')" id="calc-btn-online" class="calc-format-btn active p-3 rounded-xl border border-brand-purple bg-brand-purple/20 text-white font-medium text-sm text-center">
+                                    <i class="fa-solid fa-laptop mr-2 text-brand-purple"></i> Онлайн (Live)
+                                </button>
+                                <button type="button" onclick="setCalcFormat('campus')" id="calc-btn-campus" class="calc-format-btn p-3 rounded-xl border border-white/15 bg-white/5 text-gray-400 font-medium text-sm text-center hover:text-white">
+                                    <i class="fa-solid fa-building mr-2"></i> Офлайн в кампусе (+20%)
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Payment Plan Type -->
+                        <div class="space-y-2">
+                            <label class="text-sm font-semibold text-gray-300">Вариант оплаты:</label>
+                            <div class="grid grid-cols-2 gap-4">
+                                <button type="button" onclick="setCalcPayment('split')" id="calc-btn-split" class="calc-pay-btn active p-3 rounded-xl border border-brand-purple bg-brand-purple/20 text-white font-medium text-sm text-center">
+                                    Рассрочка на 12 мес.
+                                </button>
+                                <button type="button" onclick="setCalcPayment('full')" id="calc-btn-full" class="calc-pay-btn p-3 rounded-xl border border-white/15 bg-white/5 text-gray-400 font-medium text-sm text-center hover:text-white">
+                                    Оплата сразу (-15% скидка)
+                                </button>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Calculator Output Card -->
+                    <div class="lg:col-span-5 glass-card p-6 sm:p-8 rounded-2xl border border-brand-purple/40 space-y-6 text-center">
+                        <span class="text-xs font-mono uppercase tracking-widest text-gray-400">Итоговый расчет</span>
+                        <div>
+                            <p class="text-xs text-gray-400">Ежемесячный платеж:</p>
+                            <p id="calc-monthly-out" class="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-brand-purple via-brand-pink to-brand-cyan mt-1">$90 / мес</p>
+                        </div>
+                        <div class="pt-4 border-t border-white/10 flex justify-between text-sm">
+                            <span class="text-gray-400">Полная стоимость:</span>
+                            <span id="calc-total-out" class="font-bold text-white">$1,080</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-400">Экономия по скидке:</span>
+                            <span id="calc-savings-out" class="font-bold text-brand-emerald">$0</span>
+                        </div>
+
+                        <button onclick="openEnrollModal('Выбранный в калькуляторе курс')" class="w-full py-3.5 rounded-xl bg-gradient-to-r from-brand-purple to-brand-cyan text-white font-bold text-sm shadow-xl shadow-brand-purple/30 hover:scale-[1.02] transition-all">
+                            Забронировать со скидкой
+                        </button>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+
+        <!-- =================================================================== -->
+        <!-- TAB 3: MENTORS SECTION                                              -->
+        <!-- =================================================================== -->
+        <div id="tab-mentors" class="tab-content space-y-12">
+            
+            <div class="text-center max-w-3xl mx-auto space-y-4">
+                <span class="text-xs font-mono uppercase tracking-widest text-brand-pink bg-brand-pink/10 px-3 py-1 rounded-full border border-brand-pink/30">Команда экспертов</span>
+                <h1 class="text-3xl sm:text-5xl font-black">Учись у тех, кто делает индустрию</h1>
+                <p class="text-gray-400 text-base">Наши наставники — действующие Senior и Lead разработчики из международных IT-гигантов</p>
+            </div>
+
+            <!-- Mentor Filter -->
+            <div class="flex flex-wrap items-center justify-center gap-2">
+                <button onclick="filterMentors('all')" class="mentor-filter-btn active px-5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all bg-brand-pink text-white shadow-lg shadow-brand-pink/20">Все менторы</button>
+                <button onclick="filterMentors('web')" class="mentor-filter-btn px-5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all bg-white/5 text-gray-300 hover:text-white">Web & Frontend</button>
+                <button onclick="filterMentors('ai')" class="mentor-filter-btn px-5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all bg-white/5 text-gray-300 hover:text-white">AI & Python</button>
+                <button onclick="filterMentors('design')" class="mentor-filter-btn px-5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all bg-white/5 text-gray-300 hover:text-white">Design & UX</button>
+                <button onclick="filterMentors('mobile')" class="mentor-filter-btn px-5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all bg-white/5 text-gray-300 hover:text-white">Mobile</button>
+            </div>
+
+            <!-- Mentors Grid -->
+            <div id="mentors-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                
+                <!-- Mentor 1 -->
+                <div class="mentor-card glass-card rounded-2xl p-6 border border-white/10 space-y-5" data-role="web">
+                    <div class="flex items-center gap-4">
+                        <img class="w-20 h-20 rounded-2xl object-cover border-2 border-brand-purple" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&auto=format&fit=crop&q=80" alt="Екатерина Белова">
+                        <div>
+                            <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-brand-purple/20 text-brand-purple border border-brand-purple/30">STAFF ENGINEER</span>
+                            <h3 class="text-lg font-bold text-white mt-1">Екатерина Белова</h3>
+                            <p class="text-xs text-gray-400">Yandex Technologies (10 лет)</p>
+                        </div>
+                    </div>
+
+                    <p class="text-gray-300 text-xs leading-relaxed">
+                        Эксперт по фронтенд-архитектуре, высоконагруженным React-приложениям и производительности. Вырастила более 40 junior-разработчиков.
+                    </p>
+
+                    <div class="flex flex-wrap gap-1">
+                        <span class="text-[10px] px-2 py-0.5 rounded bg-white/5 text-gray-300 font-mono">React 19</span>
+                        <span class="text-[10px] px-2 py-0.5 rounded bg-white/5 text-gray-300 font-mono">TypeScript</span>
+                        <span class="text-[10px] px-2 py-0.5 rounded bg-white/5 text-gray-300 font-mono">Microfrontends</span>
+                    </div>
+
+                    <button onclick="openMentorBooking('Екатерина Белова')" class="w-full py-2.5 rounded-xl border border-brand-purple/50 hover:bg-brand-purple/20 text-brand-purple hover:text-white text-xs font-bold transition-all flex items-center justify-center gap-2">
+                        <i class="fa-regular fa-calendar-check"></i>
+                        <span>Записаться на 1-on-1 консультацию</span>
+                    </button>
+                </div>
+
+                <!-- Mentor 2 -->
+                <div class="mentor-card glass-card rounded-2xl p-6 border border-white/10 space-y-5" data-role="ai">
+                    <div class="flex items-center gap-4">
+                        <img class="w-20 h-20 rounded-2xl object-cover border-2 border-brand-cyan" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&auto=format&fit=crop&q=80" alt="Александр Громов">
+                        <div>
+                            <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-brand-cyan/20 text-brand-cyan border border-brand-cyan/30">LEAD AI SCIENTIST</span>
+                            <h3 class="text-lg font-bold text-white mt-1">Александр Громов</h3>
+                            <p class="text-xs text-gray-400">ex-Meta & Google (8 лет)</p>
+                        </div>
+                    </div>
+
+                    <p class="text-gray-300 text-xs leading-relaxed">
+                        Специализируется на обучении больших языковых моделей (LLM), компьютерном зрении и оптимизации алгоритмов глубокого обучения.
+                    </p>
+
+                    <div class="flex flex-wrap gap-1">
+                        <span class="text-[10px] px-2 py-0.5 rounded bg-white/5 text-gray-300 font-mono">PyTorch</span>
+                        <span class="text-[10px] px-2 py-0.5 rounded bg-white/5 text-gray-300 font-mono">NLP</span>
+                        <span class="text-[10px] px-2 py-0.5 rounded bg-white/5 text-gray-300 font-mono">Transformers</span>
+                    </div>
+
+                    <button onclick="openMentorBooking('Александр Громов')" class="w-full py-2.5 rounded-xl border border-brand-cyan/50 hover:bg-brand-cyan/20 text-brand-cyan hover:text-white text-xs font-bold transition-all flex items-center justify-center gap-2">
+                        <i class="fa-regular fa-calendar-check"></i>
+                        <span>Записаться на 1-on-1 консультацию</span>
+                    </button>
+                </div>
+
+                <!-- Mentor 3 -->
+                <div class="mentor-card glass-card rounded-2xl p-6 border border-white/10 space-y-5" data-role="design">
+                    <div class="flex items-center gap-4">
+                        <img class="w-20 h-20 rounded-2xl object-cover border-2 border-brand-pink" src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=200&auto=format&fit=crop&q=80" alt="София Вернер">
+                        <div>
+                            <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-brand-pink/20 text-brand-pink border border-brand-pink/30">PRINCIPAL DESIGNER</span>
+                            <h3 class="text-lg font-bold text-white mt-1">София Вернер</h3>
+                            <p class="text-xs text-gray-400">Revolut Fintech (9 лет)</p>
+                        </div>
+                    </div>
+
+                    <p class="text-gray-300 text-xs leading-relaxed">
+                        Проектировала интерфейсы для миллионов пользователей по всему миру. Эксперт по дизайн-системам и продуктовым исследованиям.
+                    </p>
+
+                    <div class="flex flex-wrap gap-1">
+                        <span class="text-[10px] px-2 py-0.5 rounded bg-white/5 text-gray-300 font-mono">Figma</span>
+                        <span class="text-[10px] px-2 py-0.5 rounded bg-white/5 text-gray-300 font-mono">Design Systems</span>
+                        <span class="text-[10px] px-2 py-0.5 rounded bg-white/5 text-gray-300 font-mono">UX Audits</span>
+                    </div>
+
+                    <button onclick="openMentorBooking('София Вернер')" class="w-full py-2.5 rounded-xl border border-brand-pink/50 hover:bg-brand-pink/20 text-brand-pink hover:text-white text-xs font-bold transition-all flex items-center justify-center gap-2">
+                        <i class="fa-regular fa-calendar-check"></i>
+                        <span>Записаться на 1-on-1 консультацию</span>
+                    </button>
+                </div>
+
+                <!-- Mentor 4 -->
+                <div class="mentor-card glass-card rounded-2xl p-6 border border-white/10 space-y-5" data-role="mobile">
+                    <div class="flex items-center gap-4">
+                        <img class="w-20 h-20 rounded-2xl object-cover border-2 border-brand-blue" src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&auto=format&fit=crop&q=80" alt="Артем Орлов">
+                        <div>
+                            <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-brand-blue/20 text-brand-blue border border-brand-blue/30">SENIOR MOBILE ARCHITECT</span>
+                            <h3 class="text-lg font-bold text-white mt-1">Артем Орлов</h3>
+                            <p class="text-xs text-gray-400">EPAM Systems (7 лет)</p>
+                        </div>
+                    </div>
+
+                    <p class="text-gray-300 text-xs leading-relaxed">
+                        Разработчик высокопроизводительных мобильных банк-приложений на Flutter и Native iOS/Android.
+                    </p>
+
+                    <div class="flex flex-wrap gap-1">
+                        <span class="text-[10px] px-2 py-0.5 rounded bg-white/5 text-gray-300 font-mono">Flutter</span>
+                        <span class="text-[10px] px-2 py-0.5 rounded bg-white/5 text-gray-300 font-mono">Dart</span>
+                        <span class="text-[10px] px-2 py-0.5 rounded bg-white/5 text-gray-300 font-mono">SwiftUI</span>
+                    </div>
+
+                    <button onclick="openMentorBooking('Артем Орлов')" class="w-full py-2.5 rounded-xl border border-brand-blue/50 hover:bg-brand-blue/20 text-brand-blue hover:text-white text-xs font-bold transition-all flex items-center justify-center gap-2">
+                        <i class="fa-regular fa-calendar-check"></i>
+                        <span>Записаться на 1-on-1 консультацию</span>
+                    </button>
+                </div>
+
+            </div>
+        </div>
+
+
+        <!-- =================================================================== -->
+        <!-- TAB 4: CONTACT & FAQ SECTION                                       -->
+        <!-- =================================================================== -->
+        <div id="tab-contact" class="tab-content space-y-16">
+            
+            <!-- Section Header -->
+            <div class="text-center max-w-3xl mx-auto space-y-4">
+                <span class="text-xs font-mono uppercase tracking-widest text-brand-emerald bg-brand-emerald/10 px-3 py-1 rounded-full border border-brand-emerald/30">Свяжись с нами</span>
+                <h1 class="text-3xl sm:text-5xl font-black">Готов сделать первый шаг в IT?</h1>
+                <p class="text-gray-400 text-base">Оставь заявку на бесплатную консультацию и пробный доступ к платформам обучения</p>
+            </div>
+
+            <!-- Contact Form + Info Grid -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                
+                <!-- Main Contact Form -->
+                <div class="lg:col-span-7 glass-panel p-8 rounded-3xl border border-white/10 space-y-6">
+                    <h3 class="text-2xl font-bold">Запись на бесплатный урок</h3>
+                    <form id="contact-form" onsubmit="handleFormSubmit(event)" class="space-y-4">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div class="space-y-1">
+                                <label class="text-xs font-medium text-gray-300">Ваше имя *</label>
+                                <input type="text" required placeholder="Алексей" class="w-full glass-input p-3.5 rounded-xl text-sm">
+                            </div>
+                            <div class="space-y-1">
+                                <label class="text-xs font-medium text-gray-300">Номер телефона *</label>
+                                <input type="tel" required placeholder="+7 (999) 000-00-00" class="w-full glass-input p-3.5 rounded-xl text-sm">
+                            </div>
+                        </div>
+
+                        <div class="space-y-1">
+                            <label class="text-xs font-medium text-gray-300">Email адрес *</label>
+                            <input type="email" required placeholder="alex@example.com" class="w-full glass-input p-3.5 rounded-xl text-sm">
+                        </div>
+
+                        <div class="space-y-1">
+                            <label class="text-xs font-medium text-gray-300">Интересующее направление</label>
+                            <select class="w-full glass-input p-3.5 rounded-xl text-sm">
+                                <option>Fullstack Web Developer</option>
+                                <option>Python Data Science & AI</option>
+                                <option>UI/UX & Product Design</option>
+                                <option>Flutter & Mobile Dev</option>
+                                <option>QA Automation Engineer</option>
+                                <option>DevOps & Cloud Architect</option>
+                                <option>Еще не определился (Нужна консультация)</option>
+                            </select>
+                        </div>
+
+                        <div class="space-y-1">
+                            <label class="text-xs font-medium text-gray-300">Комментарий или вопрос</label>
+                            <textarea rows="3" placeholder="Расскажите о своем опыте или поставленной цели..." class="w-full glass-input p-3.5 rounded-xl text-sm"></textarea>
+                        </div>
+
+                        <button type="submit" class="w-full py-4 rounded-xl bg-gradient-to-r from-brand-purple via-brand-pink to-brand-cyan text-white font-bold text-sm shadow-xl shadow-brand-purple/30 hover:scale-[1.01] transition-all">
+                            Отправить заявку и получить пробный урок
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Info & Campuses -->
+                <div class="lg:col-span-5 space-y-6">
+                    <div class="glass-card p-6 rounded-2xl border border-white/10 space-y-4">
+                        <h4 class="text-lg font-bold text-white">Контакты приёмной комиссии</h4>
+                        <div class="space-y-3 text-sm text-gray-300">
+                            <div class="flex items-center gap-3">
+                                <div class="w-9 h-9 rounded-lg bg-brand-purple/20 flex items-center justify-center text-brand-purple">
+                                    <i class="fa-solid fa-phone"></i>
+                                </div>
+                                <div>
+                                    <p class="text-xs text-gray-400">Горячая линия</p>
+                                    <p class="font-mono font-bold">+7 (800) 555-35-35</p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-center gap-3">
+                                <div class="w-9 h-9 rounded-lg bg-brand-cyan/20 flex items-center justify-center text-brand-cyan">
+                                    <i class="fa-solid fa-envelope"></i>
+                                </div>
+                                <div>
+                                    <p class="text-xs text-gray-400">Email для вопросов</p>
+                                    <p class="font-mono font-bold">admissions@codepulse.academy</p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-center gap-3">
+                                <div class="w-9 h-9 rounded-lg bg-brand-pink/20 flex items-center justify-center text-brand-pink">
+                                    <i class="fa-paper-plane text-brand-pink"></i>
+                                </div>
+                                <div>
+                                    <p class="text-xs text-gray-400">Telegram Bot</p>
+                                    <p class="font-mono font-bold">@CodePulseHelpBot</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Campus Addresses -->
+                    <div class="glass-card p-6 rounded-2xl border border-white/10 space-y-4">
+                        <h4 class="text-lg font-bold text-white">Офлайн кампусы</h4>
+                        <ul class="space-y-3 text-xs text-gray-300">
+                            <li class="flex items-start gap-2">
+                                <i class="fa-solid fa-location-dot text-brand-purple mt-0.5"></i>
+                                <span><strong>Москва:</strong> Иннополис / Пресненская наб., д. 12 (Москва-Сити)</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <i class="fa-solid fa-location-dot text-brand-cyan mt-0.5"></i>
+                                <span><strong>Санкт-Петербург:</strong> Аптекарская наб., д. 18</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <i class="fa-solid fa-location-dot text-brand-emerald mt-0.5"></i>
+                                <span><strong>Алматы / Ташкент:</strong> IT Park Hub & Digital Innovation Centre</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- FAQ Accordion Section -->
+            <div class="max-w-4xl mx-auto space-y-6 pt-8">
+                <div class="text-center space-y-2">
+                    <h2 class="text-3xl font-extrabold">Часто задаваемые вопросы (FAQ)</h2>
+                    <p class="text-gray-400 text-sm">Всё, что вам нужно знать перед началом обучения</p>
+                </div>
+
+                <div class="space-y-4">
+                    <!-- FAQ Item 1 -->
+                    <div class="glass-card rounded-2xl border border-white/10 overflow-hidden">
+                        <button onclick="toggleFaq(1)" class="w-full p-5 text-left flex items-center justify-between font-bold text-white hover:text-brand-purple transition-all">
+                            <span>Гарантируете ли вы трудоустройство после курса?</span>
+                            <i id="faq-icon-1" class="fa-solid fa-chevron-down text-brand-purple transition-transform duration-300"></i>
+                        </button>
+                        <div id="faq-body-1" class="hidden px-5 pb-5 text-sm text-gray-300 leading-relaxed border-t border-white/5 pt-3">
+                            Да, в наш договор входит пункт о содействии в трудоустройстве. Если вы успешно выполнили 80% домашних заданий и защитили дипломный проект, наш HR-центр будет сопровождать вас до получения первого оффера.
+                        </div>
+                    </div>
+
+                    <!-- FAQ Item 2 -->
+                    <div class="glass-card rounded-2xl border border-white/10 overflow-hidden">
+                        <button onclick="toggleFaq(2)" class="w-full p-5 text-left flex items-center justify-between font-bold text-white hover:text-brand-purple transition-all">
+                            <span>Можно ли совмещать учебу с работой или университетом?</span>
+                            <i id="faq-icon-2" class="fa-solid fa-chevron-down text-brand-purple transition-transform duration-300"></i>
+                        </button>
+                        <div id="faq-body-2" class="hidden px-5 pb-5 text-sm text-gray-300 leading-relaxed border-t border-white/5 pt-3">
+                            Все занятия проходят в вечернее время (с 19:00) или по выходным. Записи всех вебинаров доступны в личном кабинете 24/7, поэтому вы можете учиться в комфортном для себя темпе.
+                        </div>
+                    </div>
+
+                    <!-- FAQ Item 3 -->
+                    <div class="glass-card rounded-2xl border border-white/10 overflow-hidden">
+                        <button onclick="toggleFaq(3)" class="w-full p-5 text-left flex items-center justify-between font-bold text-white hover:text-brand-purple transition-all">
+                            <span>Что делать, если у меня совсем нет опыта в программировании?</span>
+                            <i id="faq-icon-3" class="fa-solid fa-chevron-down text-brand-purple transition-transform duration-300"></i>
+                        </button>
+                        <div id="faq-body-3" class="hidden px-5 pb-5 text-sm text-gray-300 leading-relaxed border-t border-white/5 pt-3">
+                            90% наших студентов начинают с полного нуля! Все программы содержат вводный модуль «Pre-Course», который плавно погрузит вас в основы логики, Git и базовые концепции разработки.
+                        </div>
+                    </div>
+
+                    <!-- FAQ Item 4 -->
+                    <div class="glass-card rounded-2xl border border-white/10 overflow-hidden">
+                        <button onclick="toggleFaq(4)" class="w-full p-5 text-left flex items-center justify-between font-bold text-white hover:text-brand-purple transition-all">
+                            <span>Какая конфигурация компьютера/ноутбука потребуется?</span>
+                            <i id="faq-icon-4" class="fa-solid fa-chevron-down text-brand-purple transition-transform duration-300"></i>
+                        </button>
+                        <div id="faq-body-4" class="hidden px-5 pb-5 text-sm text-gray-300 leading-relaxed border-t border-white/5 pt-3">
+                            Подойдет любой современный ноутбук на macOS, Windows или Linux с минимум 8 ГБ оперативной памяти (желательно 16 ГБ) и процессором Intel i5/AMD Ryzen 5 или новее.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+
+
+    <!-- Footer -->
+    <footer class="relative z-10 glass-panel border-t border-white/10 mt-20 py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div class="space-y-4">
+                <a href="#home" onclick="switchTab('home')" class="flex items-center gap-2">
+                    <span class="text-lg font-black tracking-wider bg-clip-text text-transparent bg-gradient-to-r from-white via-purple-100 to-brand-purple">
+                        CODE<span class="text-brand-cyan">PULSE</span>
+                    </span>
+                </a>
+                <p class="text-xs text-gray-400 leading-relaxed">
+                    Международная IT-академия нового поколения. Обучаем программированию, дизайну и ИИ по передовым технологиям.
+                </p>
+            </div>
+
+            <div>
+                <h5 class="text-sm font-bold text-white mb-3">Навигация</h5>
+                <ul class="space-y-2 text-xs text-gray-400">
+                    <li><button onclick="switchTab('home')" class="hover:text-white">Главная</button></li>
+                    <li><button onclick="switchTab('courses')" class="hover:text-white">Каталог курсов</button></li>
+                    <li><button onclick="switchTab('mentors')" class="hover:text-white">Преподаватели</button></li>
+                    <li><button onclick="switchTab('contact')" class="hover:text-white">Контакты и FAQ</button></li>
+                </ul>
+            </div>
+
+            <div>
+                <h5 class="text-sm font-bold text-white mb-3">Направления</h5>
+                <ul class="space-y-2 text-xs text-gray-400">
+                    <li><a href="#" onclick="switchTab('courses')" class="hover:text-white">Web Development</a></li>
+                    <li><a href="#" onclick="switchTab('courses')" class="hover:text-white">Python & Data Science</a></li>
+                    <li><a href="#" onclick="switchTab('courses')" class="hover:text-white">UI/UX & Product Design</a></li>
+                    <li><a href="#" onclick="switchTab('courses')" class="hover:text-white">QA Automation</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h5 class="text-sm font-bold text-white mb-3">Сообщество</h5>
+                <div class="flex gap-3 text-lg text-gray-400">
+                    <a href="#" class="w-9 h-9 rounded-lg glass-panel flex items-center justify-center hover:text-brand-cyan"><i class="fa-brands fa-telegram"></i></a>
+                    <a href="#" class="w-9 h-9 rounded-lg glass-panel flex items-center justify-center hover:text-brand-pink"><i class="fa-brands fa-youtube"></i></a>
+                    <a href="#" class="w-9 h-9 rounded-lg glass-panel flex items-center justify-center hover:text-brand-purple"><i class="fa-brands fa-github"></i></a>
+                    <a href="#" class="w-9 h-9 rounded-lg glass-panel flex items-center justify-center hover:text-blue-400"><i class="fa-brands fa-vk"></i></a>
+                </div>
+                <p class="text-[10px] text-gray-500 mt-4">© 2026 CodePulse Academy Inc. Все права защищены.</p>
+            </div>
+        </div>
+    </footer>
+
+
+    <!-- =================================================================== -->
+    <!-- MODALS CONTAINER                                                    -->
+    <!-- =================================================================== -->
+
+    <!-- Quick Contact Modal -->
+    <div id="quickContactModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md hidden flex items-center justify-center p-4">
+        <div class="glass-panel max-w-md w-full p-6 sm:p-8 rounded-3xl border border-brand-purple/40 space-y-6 relative animate-float">
+            <button onclick="closeModal('quickContactModal')" class="absolute top-4 right-4 text-gray-400 hover:text-white text-xl">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            
+            <div class="space-y-2">
+                <h3 class="text-2xl font-bold">Быстрая запись</h3>
+                <p class="text-xs text-gray-400">Получи доступ к первому бесплатному вводному модулю</p>
+            </div>
+
+            <form onsubmit="handleModalSubmit(event, 'quickContactModal')" class="space-y-4">
+                <input type="text" required placeholder="Ваше имя" class="w-full glass-input p-3.5 rounded-xl text-sm">
+                <input type="tel" required placeholder="Ваш телефон" class="w-full glass-input p-3.5 rounded-xl text-sm">
+                <button type="submit" class="w-full py-3.5 rounded-xl bg-brand-purple hover:bg-purple-600 text-white font-bold text-sm shadow-lg shadow-brand-purple/30">
+                    Получить доступ
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Course Enrollment Modal -->
+    <div id="enrollModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md hidden flex items-center justify-center p-4">
+        <div class="glass-panel max-w-md w-full p-6 sm:p-8 rounded-3xl border border-brand-cyan/40 space-y-6 relative">
+            <button onclick="closeModal('enrollModal')" class="absolute top-4 right-4 text-gray-400 hover:text-white text-xl">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            
+            <div class="space-y-2">
+                <span class="text-xs font-mono uppercase text-brand-cyan">Запись на курс</span>
+                <h3 id="enroll-course-name" class="text-xl font-bold text-white">Курс...</h3>
+            </div>
+
+            <form onsubmit="handleModalSubmit(event, 'enrollModal')" class="space-y-4">
+                <input type="text" required placeholder="Ваше имя" class="w-full glass-input p-3.5 rounded-xl text-sm">
+                <input type="tel" required placeholder="Номер телефона" class="w-full glass-input p-3.5 rounded-xl text-sm">
+                <button type="submit" class="w-full py-3.5 rounded-xl bg-brand-cyan hover:bg-cyan-600 text-white font-bold text-sm shadow-lg shadow-brand-cyan/30">
+                    Забронировать место
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Mentor Booking Modal -->
+    <div id="mentorBookingModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md hidden flex items-center justify-center p-4">
+        <div class="glass-panel max-w-md w-full p-6 sm:p-8 rounded-3xl border border-brand-pink/40 space-y-6 relative">
+            <button onclick="closeModal('mentorBookingModal')" class="absolute top-4 right-4 text-gray-400 hover:text-white text-xl">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            
+            <div class="space-y-2">
+                <span class="text-xs font-mono uppercase text-brand-pink">Консультация 1-on-1</span>
+                <h3 id="mentor-modal-name" class="text-xl font-bold text-white">Ментор</h3>
+            </div>
+
+            <form onsubmit="handleModalSubmit(event, 'mentorBookingModal')" class="space-y-4">
+                <input type="text" required placeholder="Ваше имя" class="w-full glass-input p-3.5 rounded-xl text-sm">
+                <input type="email" required placeholder="Email для отправки ссылки Zoom" class="w-full glass-input p-3.5 rounded-xl text-sm">
+                <input type="date" required class="w-full glass-input p-3.5 rounded-xl text-sm">
+                <button type="submit" class="w-full py-3.5 rounded-xl bg-brand-pink hover:bg-pink-600 text-white font-bold text-sm shadow-lg shadow-brand-pink/30">
+                    Подтвердить запись
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Course Detailed Syllabus Modal -->
+    <div id="syllabusModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md hidden flex items-center justify-center p-4">
+        <div class="glass-panel max-w-2xl w-full p-6 sm:p-8 rounded-3xl border border-white/15 space-y-6 relative max-h-[90vh] overflow-y-auto">
+            <button onclick="closeModal('syllabusModal')" class="absolute top-4 right-4 text-gray-400 hover:text-white text-xl">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <div class="space-y-2 border-b border-white/10 pb-4">
+                <span id="syllabus-badge" class="text-xs font-mono uppercase px-2.5 py-1 rounded bg-brand-purple/20 text-brand-purple border border-brand-purple/30">Программа курса</span>
+                <h3 id="syllabus-title" class="text-2xl font-bold text-white">Fullstack Web Developer</h3>
+            </div>
+
+            <!-- Syllabus Modules Accordion/List -->
+            <div id="syllabus-modules-container" class="space-y-4">
+                <!-- Dynamically populated via JS -->
+            </div>
+
+            <div class="pt-4 border-t border-white/10 flex justify-end">
+                <button onclick="closeModal('syllabusModal')" class="px-6 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-semibold text-xs">
+                    Закрыть
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification Overlay -->
+    <div id="toast" class="fixed bottom-8 right-8 z-50 glass-panel border border-brand-emerald/50 px-6 py-4 rounded-2xl shadow-2xl flex items-center gap-3 translate-y-24 opacity-0 transition-all duration-300">
+        <div class="w-9 h-9 rounded-xl bg-brand-emerald/20 text-brand-emerald flex items-center justify-center text-lg">
+            <i class="fa-solid fa-circle-check"></i>
+        </div>
+        <div>
+            <h5 class="text-sm font-bold text-white">Успешно отправлено!</h5>
+            <p id="toast-message" class="text-xs text-gray-300">Наш менеджер свяжется с вами в течение 15 минут.</p>
+        </div>
+    </div>
+
+
+    <!-- =================================================================== -->
+    <!-- JAVASCRIPT LOGIC                                                    -->
+    <!-- =================================================================== -->
+    <script>
+        function switchTab(tabId) {
+            // Hide all tab contents
+            const tabs = document.querySelectorAll('.tab-content');
+            tabs.forEach(tab => tab.classList.remove('active'));
+
+            // Show current tab
+            const targetTab = document.getElementById('tab-' + tabId);
+            if (targetTab) {
+                targetTab.classList.add('active');
+            }
+
+            // Update nav buttons
+            const navBtns = document.querySelectorAll('.nav-btn');
+            navBtns.forEach(btn => {
+                btn.classList.remove('text-white', 'bg-brand-purple/80', 'shadow-lg', 'shadow-brand-purple/30');
+                btn.classList.add('text-gray-300', 'hover:text-white');
+            });
+
+            const activeBtn = document.getElementById('nav-' + tabId);
+            if (activeBtn) {
+                activeBtn.classList.remove('text-gray-300');
+                activeBtn.classList.add('text-white', 'bg-brand-purple/80', 'shadow-lg', 'shadow-brand-purple/30');
+            }
+
+            // Scroll to top smooth
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        }
+
+        const quizData = [
+            {
+                question: "Что тебе ближе всего в вашей идеальной работе?",
+                options: [
+                    { text: "Создавать красивый визуал и верстать интерфейсы", result: "Fullstack Web Developer" },
+                    { text: "Работать с цифрами, логикой и алгоритмами ИИ", result: "Python Data Science & AI" },
+                    { text: "Проектировать удобство для пользователей", result: "UI/UX & Product Design" },
+                    { text: "Искать баги и автоматизировать проверки", result: "QA Automation Engineer" }
+                ]
+            },
+            {
+                question: "Какая операционная система твоя любимая?",
+                options: [
+                    { text: "macOS / iOS ecosystem", result: "Flutter & Mobile Dev" },
+                    { text: "Linux / Терминал и Сервера", result: "DevOps & Cloud Architect" },
+                    { text: "Windows / Главное чтобы всё работало", result: "Fullstack Web Developer" },
+                    { text: "Мне всё равно, важен чистый код", result: "Python Data Science & AI" }
+                ]
+            }
+        ];
+
+        let currentQuizIndex = 0;
+
+        function renderQuiz() {
+            const stepTitle = document.getElementById('quiz-step-title');
+            const qText = document.getElementById('quiz-question-text');
+            const optionsHolder = document.getElementById('quiz-options');
+
+            if (currentQuizIndex < quizData.length) {
+                stepTitle.textContent = `Вопрос ${currentQuizIndex + 1} из ${quizData.length}`;
+                qText.textContent = quizData[currentQuizIndex].question;
+
+                optionsHolder.innerHTML = '';
+                quizData[currentQuizIndex].options.forEach(opt => {
+                    const btn = document.createElement('button');
+                    btn.className = "w-full text-left p-4 rounded-xl border border-white/10 glass-panel hover:border-brand-purple hover:bg-brand-purple/10 text-sm font-medium transition-all text-gray-200";
+                    btn.textContent = opt.text;
+                    btn.onclick = () => handleQuizSelect(opt.result);
+                    optionsHolder.appendChild(btn);
+                });
+
+                // Update dots
+                document.getElementById('dot-1').className = currentQuizIndex >= 0 ? "w-3 h-3 rounded-full bg-brand-purple" : "w-3 h-3 rounded-full bg-white/20";
+                document.getElementById('dot-2').className = currentQuizIndex >= 1 ? "w-3 h-3 rounded-full bg-brand-purple" : "w-3 h-3 rounded-full bg-white/20";
+            }
+        }
+
+        function handleQuizSelect(recommendedCourse) {
+            currentQuizIndex++;
+            if (currentQuizIndex < quizData.length) {
+                renderQuiz();
+            } else {
+                // Show Quiz Result
+                document.getElementById('quiz-question-holder').classList.add('hidden');
+                document.getElementById('quiz-result-holder').classList.remove('hidden');
+                document.getElementById('result-title').textContent = recommendedCourse;
+            }
+        }
+
+        function resetQuiz() {
+            currentQuizIndex = 0;
+            document.getElementById('quiz-question-holder').classList.remove('hidden');
+            document.getElementById('quiz-result-holder').classList.add('hidden');
+            renderQuiz();
+        }
+
+        function filterCourses(category) {
+            const cards = document.querySelectorAll('.course-card');
+            cards.forEach(card => {
+                if (category === 'all' || card.getAttribute('data-category') === category) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            // Update filter buttons
+            const btns = document.querySelectorAll('.course-filter-btn');
+            btns.forEach(btn => {
+                btn.classList.remove('bg-brand-purple', 'text-white', 'shadow-lg');
+                btn.classList.add('bg-white/5', 'text-gray-300');
+            });
+            event.target.classList.remove('bg-white/5', 'text-gray-300');
+            event.target.classList.add('bg-brand-purple', 'text-white', 'shadow-lg');
+        }
+
+        function filterMentors(role) {
+            const cards = document.querySelectorAll('.mentor-card');
+            cards.forEach(card => {
+                if (role === 'all' || card.getAttribute('data-role') === role) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            const btns = document.querySelectorAll('.mentor-filter-btn');
+            btns.forEach(btn => {
+                btn.classList.remove('bg-brand-pink', 'text-white');
+                btn.classList.add('bg-white/5', 'text-gray-300');
+            });
+            event.target.classList.remove('bg-white/5', 'text-gray-300');
+            event.target.classList.add('bg-brand-pink', 'text-white');
+        }
+
+        let calcFormat = 'online';
+        let calcPayment = 'split';
+
+        function setCalcFormat(fmt) {
+            calcFormat = fmt;
+            document.getElementById('calc-btn-online').className = fmt === 'online' ? 'calc-format-btn active p-3 rounded-xl border border-brand-purple bg-brand-purple/20 text-white font-medium text-sm text-center' : 'calc-format-btn p-3 rounded-xl border border-white/15 bg-white/5 text-gray-400 font-medium text-sm text-center hover:text-white';
+            document.getElementById('calc-btn-campus').className = fmt === 'campus' ? 'calc-format-btn active p-3 rounded-xl border border-brand-purple bg-brand-purple/20 text-white font-medium text-sm text-center' : 'calc-format-btn p-3 rounded-xl border border-white/15 bg-white/5 text-gray-400 font-medium text-sm text-center hover:text-white';
+            updateCalculator();
+        }
+
+        function setCalcPayment(pay) {
+            calcPayment = pay;
+            document.getElementById('calc-btn-split').className = pay === 'split' ? 'calc-pay-btn active p-3 rounded-xl border border-brand-purple bg-brand-purple/20 text-white font-medium text-sm text-center' : 'calc-pay-btn p-3 rounded-xl border border-white/15 bg-white/5 text-gray-400 font-medium text-sm text-center hover:text-white';
+            document.getElementById('calc-btn-full').className = pay === 'full' ? 'calc-pay-btn active p-3 rounded-xl border border-brand-purple bg-brand-purple/20 text-white font-medium text-sm text-center' : 'calc-pay-btn p-3 rounded-xl border border-white/15 bg-white/5 text-gray-400 font-medium text-sm text-center hover:text-white';
+            updateCalculator();
+        }
+
+        function updateCalculator() {
+            const basePrice = parseInt(document.getElementById('calc-course-select').value);
+            let total = basePrice;
+
+            if (calcFormat === 'campus') {
+                total *= 1.2; // +20% for offline campus
+            }
+
+            let savings = 0;
+            if (calcPayment === 'full') {
+                savings = total * 0.15;
+                total -= savings;
+            }
+
+            const monthly = calcPayment === 'split' ? Math.round(total / 12) : Math.round(total);
+
+            document.getElementById('calc-monthly-out').textContent = `$${monthly} ${calcPayment === 'split' ? '/ мес' : 'сразу'}`;
+            document.getElementById('calc-total-out').textContent = `$${Math.round(total)}`;
+            document.getElementById('calc-savings-out').textContent = `$${Math.round(savings)}`;
+        }
+
+        const syllabi = {
+            fullstack: {
+                title: "Fullstack Web Developer Program 2026",
+                modules: [
+                    { title: "Модуль 1: Frontend Core", desc: "HTML5, CSS3, Flexbox, Grid, JavaScript ES6+, Async/Await, DOM manipulation." },
+                    { title: "Модуль 2: Modern React 19 & Next.js", desc: "Hooks, Redux Toolkit, Server Components, Routing, Tailwind CSS." },
+                    { title: "Модуль 3: Backend & Databases", desc: "Node.js, Express, PostgreSQL, Prisma ORM, REST API, JWT Auth." },
+                    { title: "Модуль 4: Дипломный проект", desc: "Разработка полнофункционального интернет-магазина или SaaS сервиса." }
+                ]
+            },
+            python: {
+                title: "Python Data Science & AI Program",
+                modules: [
+                    { title: "Модуль 1: Основы Python & OOP", desc: "Синтаксис, структуры данных, объектно-ориентированное программирование." },
+                    { title: "Модуль 2: Data Analysis & Visualization", desc: "Pandas, NumPy, Matplotlib, Seaborn, обработка больших массивов." },
+                    { title: "Модуль 3: Machine Learning & PyTorch", desc: "Обучение с учителем, нейросети, Transformers, работу с LLM API." }
+                ]
+            },
+            design: {
+                title: "UI/UX & Product Design Program",
+                modules: [
+                    { title: "Модуль 1: Figma Mastery", desc: "Auto-layouts, components, variants, interactive prototyping." },
+                    { title: "Модуль 2: UX Исследования", desc: "CustDev, CJM, wireframing, юзабилити-тестирование." }
+                ]
+            }
+        };
+
+        function openSyllabusModal(key) {
+            const data = syllabi[key] || syllabi.fullstack;
+            document.getElementById('syllabus-title').textContent = data.title;
+            const container = document.getElementById('syllabus-modules-container');
+            container.innerHTML = '';
+
+            data.modules.forEach(m => {
+                const div = document.createElement('div');
+                div.className = "glass-card p-4 rounded-xl border border-white/10 space-y-1";
+                div.innerHTML = `<h5 class="font-bold text-sm text-brand-cyan">${m.title}</h5><p class="text-xs text-gray-300">${m.desc}</p>`;
+                container.appendChild(div);
+            });
+
+            openModal('syllabusModal');
+        }
+
+        function openModal(id) {
+            document.getElementById(id).classList.remove('hidden');
+        }
+
+        function closeModal(id) {
+            document.getElementById(id).classList.add('hidden');
+        }
+
+        function openEnrollModal(courseName) {
+            document.getElementById('enroll-course-name').textContent = courseName;
+            openModal('enrollModal');
+        }
+
+        function openMentorBooking(mentorName) {
+            document.getElementById('mentor-modal-name').textContent = `Запись к: ${mentorName}`;
+            openModal('mentorBookingModal');
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-message').textContent = msg;
+            toast.classList.remove('translate-y-24', 'opacity-0');
+            setTimeout(() => {
+                toast.classList.add('translate-y-24', 'opacity-0');
+            }, 4000);
+        }
+
+        function handleFormSubmit(e) {
+            e.preventDefault();
+            showToast("Спасибо за заявку! Мы свяжемся с вами в течение 15 минут.");
+            e.target.reset();
+        }
+
+        function handleModalSubmit(e, modalId) {
+            e.preventDefault();
+            closeModal(modalId);
+            showToast("Заявка успешно принята! Доступ отправлен на ваш email.");
+        }
+
+        function toggleFaq(id) {
+            const body = document.getElementById(`faq-body-${id}`);
+            const icon = document.getElementById(`faq-icon-${id}`);
+
+            if (body.classList.contains('hidden')) {
+                body.classList.remove('hidden');
+                icon.classList.add('rotate-180');
+            } else {
+                body.classList.add('hidden');
+                icon.classList.remove('rotate-180');
+            }
+        }
+
+        // Initialize defaults on window load
+        window.onload = function() {
+            renderQuiz();
+            updateCalculator();
+        };
+    </script>
+</body>
+</html>
